@@ -1,4 +1,4 @@
-﻿# TC-Bazaar
+﻿# TC-Baldr's Levelling List
 
 A Tool that displays targets status from baldr's basic advice for [Torn City](https://torn.com/1778676)
 
