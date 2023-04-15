@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Baldr's Levelling List</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@tailwindcss/typography@0.4.1/dist/typography.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@tailwindcss/forms@0.3.3/dist/forms.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"
+    />
+    <style>
+      html,
+      body {
+        background-color: #1f2937;
+        color: #f9fafb;
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="flex justify-center items-center min-h-screen">
+    <div class="max-w-screen-lg w-full px-4">
+      <h1 class="text-3xl font-bold mt-6 mb-4 text-center">
+        Baldr's Levelling List
+      </h1>
+      <div class="bg-gray-800 rounded-lg p-8">
+        <form class="max-w-md mx-auto">
+          <div class="mb-4">
+            <label for="api-key" class="block text-gray-400 font-medium mb-2"
+              >API Key: Generate a Public API Key using the button below</label
+            >
+            <input
+              type="text"
+              id="api-key"
+              name="api-key"
+              class="border rounded py-2 px-3 w-full bg-gray-700 text-white"
+            />
+          </div>
+          <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded w-full"
+            onclick="fetchData(); return false;"
+          >
+            Fetch Data
+          </button>
+          <a
+            href="https://www.torn.com/preferences.php#tab=api?&step=addNewKey&title=baldrlist&type=1"
+            ><button
+              type="button"
+              class="mt-1 bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded w-full"
+            >
+              Generate API Key
+            </button></a
+          >
+        </form>
+        <h1 class="text-sm mt-2 mb-1 text-center">
+          You API key is not sent or stored anywhere.
+        </h1>
+        <div class="flex justify-center">
+          <a
+            href="https://github.com/oranweb/tc-baldrs-levelling-list"
+            class="text-sm mr-4"
+            >View Source on Github</a
+          >
+          <a href="https://www.torn.com/forums.php" class="text-sm"
+            >Leave Feedback</a
+          >
+        </div>
+      </div>
+      <div class="overflow-x-auto mt-8">
+        <table
+          class="w-full table-auto border divide-y divide-gray-700 hidden"
+          id="data-table"
+        >
+          <thead>
+            <tr class="bg-gray-700">
+              <th class="p-2">Name</th>
+              <th class="p-2">User ID</th>
+              <th class="p-2">Level</th>
+              <th class="p-2">Total</th>
+              <th class="p-2">Strength</th>
+              <th class="p-2">Defense</th>
+              <th class="p-2">Speed</th>
+              <th class="p-2">Dexterity</th>
+              <th class="p-2">Status</th>
+              <th class="p-2">Attack</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+        <p class="text-center text-gray-400 mt-8 hidden" id="no-data-message">
+          No data available.
+        </p>
+      </div>
+    </div>
+    <!--- reminder to cache bust script --->
+    <script src="script.js?v=1.34"></script>
+  </body>
+</html>
