@@ -1,4 +1,5 @@
 let tableData = [];
+let timer;
 
 function fetchData() {
   const apiKey = document.getElementById("api-key").value;
@@ -6,6 +7,10 @@ function fetchData() {
     alert("Please enter an API key");
     return;
   }
+
+  const fetchButton = document.getElementById("fetch-button");
+  fetchButton.disabled = true;
+  startCountdown();
 
   const tableBody = document.getElementById("table-body");
   tableBody.innerHTML = "";
@@ -43,6 +48,23 @@ function fetchData() {
     .catch((error) => {
       console.error("Error fetching data:", error);
     });
+}
+
+function startCountdown() {
+  const fetchButton = document.getElementById("fetch-button");
+  let remainingTime = 60;
+
+  clearInterval(timer);
+  timer = setInterval(() => {
+    remainingTime--;
+    fetchButton.textContent = `Fetch (${remainingTime}s)`;
+
+    if (remainingTime <= 0) {
+      clearInterval(timer);
+      fetchButton.textContent = "Fetch";
+      fetchButton.disabled = false;
+    }
+  }, 1000);
 }
 
 function displayNoDataMessage() {
