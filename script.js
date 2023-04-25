@@ -60,6 +60,10 @@ async function fetchData() {
 
     hideNoDataMessage();
     displayDataTable();
+
+    setInterval(() => {
+      updateStatus();
+    }, 1000);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -115,6 +119,25 @@ function formatStatus(status) {
     formattedStatus = `Hospitalized (${minutes}m ${seconds}s)`;
   }
   return formattedStatus;
+}
+
+function updateStatus() {
+  const rows = document.querySelectorAll("#table-body tr");
+  rows.forEach((row) => {
+    const statusCell = row.querySelector("td:nth-child(8)");
+    const currentStatus = statusCell.textContent.trim();
+    const remaining = parseHospitalTime(currentStatus);
+    if (remaining === Infinity) return;
+
+    const updatedRemaining = remaining - 1;
+    if (updatedRemaining <= 0) {
+      statusCell.textContent = "Okay";
+    } else {
+      const updatedMinutes = Math.floor(updatedRemaining / 60);
+      const updatedSeconds = updatedRemaining % 60;
+      statusCell.textContent = `Hospitalized (${updatedMinutes}m ${updatedSeconds}s)`;
+    }
+  });
 }
 
 function createAttackLink(id) {
