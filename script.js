@@ -27,22 +27,37 @@ async function fetchData() {
       return;
     }
 
-    const requests = tableData.map(async (row, index) => {
+    const userPromises = tableData.map(async (row) => {
       const apiUrl = `https://api.torn.com/user/${row.id}?selections=basic&key=${apiKey}`;
       try {
         const userResponse = await fetch(apiUrl);
         const userData = await userResponse.json();
         const status = formatStatus(userData.status);
-        const attackLink = createAttackLink(row.id);
-        const newRow = createTableRow(row, status, attackLink, index);
-        return newRow;
+        return { ...row, status };
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     });
 
-    const tableRows = await Promise.all(requests);
-    tableBody.innerHTML = tableRows.join('');
+    const usersWithStatus = await Promise.all(userPromises);
+
+    const sortedUsers = usersWithStatus.sort((a, b) => {
+      if (a.status === "Okay" && b.status !== "Okay") return -1;
+      if (a.status !== "Okay" && b.status === "Okay") return 1;
+      if (a.status === "Okay" && b.status === "Okay") return 0;
+
+      const aRemaining = parseHospitalTime(a.status);
+      const bRemaining = parseHospitalTime(b.status);
+
+      return aRemaining - bRemaining;
+    });
+
+    sortedUsers.forEach((user, index) => {
+      const attackLink = createAttackLink(user.id);
+      const newRow = createTableRow(user, user.status, attackLink, index);
+      tableBody.innerHTML += newRow;
+    });
+
     hideNoDataMessage();
     displayDataTable();
   } catch (error) {
@@ -65,6 +80,13 @@ function startCountdown() {
       fetchButton.disabled = false;
     }
   }, 1000);
+}
+
+function parseHospitalTime(status) {
+  const timeMatch = status.match(/\((\d+)m (\d+)s\)/);
+  if (!timeMatch) return Infinity;
+  const [_, minutes, seconds] = timeMatch;
+  return parseInt(minutes) * 60 + parseInt(seconds);
 }
 
 function displayNoDataMessage() {
