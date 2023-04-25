@@ -1,7 +1,7 @@
 let tableData = [];
 let timer;
 
-function fetchData() {
+async function fetchData() {
   const apiKey = document.getElementById("api-key").value;
   if (apiKey === "") {
     alert("Please enter an API key");
@@ -18,41 +18,41 @@ function fetchData() {
   const dataSelect = document.getElementById("data-select");
   const dataUrl = dataSelect.options[dataSelect.selectedIndex].value;
 
-  fetch(dataUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      tableData = data;
-      if (tableData.length === 0) {
-        displayNoDataMessage();
-        return;
+  try {
+    const response = await fetch(dataUrl);
+    const data = await response.json();
+    tableData = data;
+    if (tableData.length === 0) {
+      displayNoDataMessage();
+      return;
+    }
+
+    const requests = tableData.map(async (row, index) => {
+      const apiUrl = `https://api.torn.com/user/${row.id}?selections=basic&key=${apiKey}`;
+      try {
+        const userResponse = await fetch(apiUrl);
+        const userData = await userResponse.json();
+        const status = formatStatus(userData.status);
+        const attackLink = createAttackLink(row.id);
+        const newRow = createTableRow(row, status, attackLink, index);
+        return newRow;
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-
-      tableData.forEach((row, index) => {
-        const apiUrl = `https://api.torn.com/user/${row.id}?selections=basic&key=${apiKey}`;
-        fetch(apiUrl)
-          .then((response) => response.json())
-          .then((userData) => {
-            const status = formatStatus(userData.status);
-            const attackLink = createAttackLink(row.id);
-            const newRow = createTableRow(row, status, attackLink, index);
-            tableBody.innerHTML += newRow;
-          })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-          });
-      });
-
-      hideNoDataMessage();
-      displayDataTable();
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
     });
+
+    const tableRows = await Promise.all(requests);
+    tableBody.innerHTML = tableRows.join('');
+    hideNoDataMessage();
+    displayDataTable();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 }
 
 function startCountdown() {
   const fetchButton = document.getElementById("fetch-button");
-  let remainingTime = 60;
+  let remainingTime = 30;
 
   clearInterval(timer);
   timer = setInterval(() => {

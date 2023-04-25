@@ -49,7 +49,7 @@
                         The <a href="https://www.torn.com/profiles.php?XID=1847600" target="_blank"><span
                                 class="text-blue-600 underline">Baldr's</span></a> Levelling List
                     </h1>
-                    <h3 class="text-lg font-medium tracking-wider">
+                    <h3 class="text-base font-medium tracking-wider">
                         <div class="max-w-2xl mx-auto">
                             <p>
                                 This list features inactive, low-stat players, ideal for leveling up. Focus on <span
@@ -65,7 +65,7 @@
                         </div>
                     </h3>
                     <div class="py-4 mx-auto max-w-4xl flex justify-center items-center flex-wrap">
-                        <form class="mt-6 sm:flex sm:items-center" action="#">
+                        <form class="mt-6 sm:flex sm:items-center">
                             <label for="api-key" class="sr-only">API key</label>
                             <div class="grid grid-cols-1 sm:flex-auto px-2">
                                 <input type="text" name="api-key" id="api-key"
@@ -98,11 +98,10 @@
                         </form>
                     </div>
                     <div class="flex flex-col items-center space-y-4 dark:text-gray-400">
-                        <div class="py-4 px-4 sm:px-6 lg:px-8 text-left">
+                        <div id="data-table" class="py-4 px-4 sm:px-6 lg:px-8 text-left hidden">
                             <div class="-mx-4 mt-10 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
                                 <div class="table-container overflow-x-auto w-full">
-                                    <table id="data-table"
-                                        class="table-fixed max-w-full min-w-full divide-y divide-gray-300 hidden">
+                                    <table class="table-fixed max-w-full min-w-full divide-y divide-gray-300">
                                         <thead>
                                             <tr>
                                                 <th scope="col"
@@ -151,7 +150,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="text-base font-medium tracking-wider max-w-2xl mx-auto">
+                        <p class="text-sm font-medium tracking-wider max-w-2xl mx-auto">
                             This code was crafted with love and fueled by countless cups of coffee, courtesy of
                             <a href="https://www.torn.com/profiles.php?XID=1778676"
                                 class="font-extrabold text-blue-400 hover:text-blue-300">oraN [1778676]</a> and <a
@@ -161,7 +160,7 @@
                             means the world
                             to us!
                         </p>
-                        <p class="py-8 text-base font-medium tracking-wider max-w-2xl mx-auto">
+                        <p class="py-8 text-sm font-medium tracking-wider max-w-2xl mx-auto">
                             You can find this project's source code on <a
                                 href="https://github.com/oranweb/tc-baldrs-levelling-list" target="_blank"
                                 class="text-blue-400 hover:text-blue-300">GitHub</a>. Your feedback is appreciated - <a
@@ -181,7 +180,6 @@
 <!-- TODO: Add generate api key link under input or as secondary button -->
 <!-- TODO: Fix missing "border-t border-gray-200" on some "td" -->
 <!-- TODO: Feature add sqliteDB -->
-<!-- TODO: Use async/await: Instead of using chained .then() statements, you can use async/await to handle promises, making your code cleaner and more readable. -->
 <!-- TODO: Error handling: Implement better error handling by displaying user-friendly error messages in the UI, rather than just logging errors to the console. -->
 <!-- TODO: Cache API calls: Cache the results of API calls to prevent redundant requests, which will improve performance and reduce load on the API server. -->
 <!-- TODO: Debounce input: Debounce the input event that triggers the fetchData function. This will prevent multiple API calls when the user is typing or selecting options, improving performance and reducing the number of requests. -->
