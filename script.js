@@ -22,14 +22,14 @@ function fetchData() {
         return;
       }
 
-      tableData.forEach((row) => {
+      tableData.forEach((row, index) => {
         const apiUrl = `https://api.torn.com/user/${row.id}?selections=basic&key=${apiKey}`;
         fetch(apiUrl)
           .then((response) => response.json())
           .then((userData) => {
             const status = formatStatus(userData.status);
             const attackLink = createAttackLink(row.id);
-            const newRow = createTableRow(row, status, attackLink);
+            const newRow = createTableRow(row, status, attackLink, index);
             tableBody.innerHTML += newRow;
           })
           .catch((error) => {
@@ -74,22 +74,40 @@ function formatStatus(status) {
 }
 
 function createAttackLink(id) {
-  return `<a href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID=${id}">Attack Link</a>`;
+  return `<a href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID=${id}" class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white">Attack</a>`;
 }
 
-function createTableRow(row, status, attackLink) {
+function createTableRow(row, status, attackLink, index) {
+  const isNotFirstOrLast = index > 0 && index < tableData.length - 1;
+  const borderClass = isNotFirstOrLast ? 'border-t border-gray-200' : '';
+
   return `
     <tr>
-      <td class="pl-2"><a href="https://www.torn.com/profiles.php?XID=${row.id}" target="_blank">${row.name}</a></td>
-      <td>${row.id}</td>
-      <td>${row.lvl}</td>
-      <td>${row.total}</td>
-      <td>${row.str}</td>
-      <td>${row.def}</td>
-      <td>${row.spd}</td>
-      <td>${row.dex}</td>
-      <td>${status}</td>
-      <td class="text-blue-300">${attackLink}</td>
+      <td class="relative py-4 pl-4 pr-3 text-sm sm:pl-6 min-w-0 ${borderClass}">
+        <div class="font-medium text-gray-900">
+            <a href="https://www.torn.com/profiles.php?XID=${row.id}" target="_blank">
+              ${row.name}
+              <span class="ml-1 text-blue-600">[${row.id}]</span>
+            </a>
+        </div>
+        <div class="mt-1 flex flex-col text-gray-500 sm:block lg:hidden">
+            <span>Level: ${row.lvl}</span>
+            <span>Total: ${row.total}</span>
+        </div>
+      </td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell min-w-0 ${borderClass}">${row.lvl}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell min-w-0 ${borderClass}">${row.total}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell min-w-0 ${borderClass}">${row.str}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell min-w-0 ${borderClass}">${row.def}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell min-w-0 ${borderClass}">${row.spd}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell min-w-0 ${borderClass}">${row.dex}</td>
+      <td class="px-3 py-3.5 text-sm text-gray-500 min-w-0 ${borderClass}">
+        <div class="sm:hidden">${status}</div>
+        <div class="hidden sm:block">${status}</div>
+      </td>
+      <td class="relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 min-w-0">
+        ${attackLink}
+      </td>
     </tr>
   `;
 }
