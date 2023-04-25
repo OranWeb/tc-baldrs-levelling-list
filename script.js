@@ -145,8 +145,8 @@ function createAttackLink(id) {
 }
 
 function createTableRow(row, status, attackLink, index) {
-  const isNotFirstOrLast = index > 0 && index < tableData.length - 1;
-  const borderClass = isNotFirstOrLast ? 'border-t border-gray-200' : '';
+  const isNotFirst = index > 0;
+  const borderClass = isNotFirst ? 'border-t border-gray-200' : '';
 
   return `
     <tr>
@@ -169,10 +169,10 @@ function createTableRow(row, status, attackLink, index) {
       <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-300 lg:table-cell min-w-0 ${borderClass}">${row.spd}</td>
       <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-300 lg:table-cell min-w-0 ${borderClass}">${row.dex}</td>
       <td class="px-3 py-3.5 text-sm text-gray-500 dark:text-gray-300 min-w-0 ${borderClass}">
-        <div class="sm:hidden">${status}</div>
-        <div class="hidden sm:block">${status}</div>
+        <div class="sm:hidden w-40">${status}</div>
+        <div class="hidden sm:block w-40">${status}</div>
       </td>
-      <td class="relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 min-w-0">
+      <td class="relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 min-w-0 ${borderClass}">
         ${attackLink}
       </td>
     </tr>
