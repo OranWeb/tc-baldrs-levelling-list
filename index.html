@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baldr's Levelling List</title>
+    <title>The Baldr's Levelling List</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js"></script>
@@ -70,14 +70,14 @@
                             <div class="grid grid-cols-1 sm:flex-auto px-2">
                                 <input type="text" name="api-key" id="api-key"
                                     class="peer relative col-start-1 row-start-1 border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 w-72 h-10 px-4 py-2"
-                                    placeholder="API key">
+                                    placeholder="API key" autocomplete="off">
                                 <div class="col-start-1 col-end-3 row-start-1 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 peer-focus:ring-2 peer-focus:ring-blue-600"
                                     aria-hidden="true"></div>
                                 <div class="col-start-2 row-start-1 flex items-center">
                                     <span class="h-4 w-px flex-none bg-gray-200" aria-hidden="true"></span>
                                     <label for="data-select" class="sr-only">Data select</label>
                                     <select id="data-select" name="data-select"
-                                        class="rounded-md border-0 bg-transparent py-1.5 pl-4 pr-7 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+                                        class="rounded-md border-0 bg-transparent py-1.5 pl-4 pr-7 text-gray-900 dark:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
                                         <option value="data.json">Baldr's List</option>
                                         <option value="data3.json">Baldr's List 2</option>
                                         <option value="data4.json">Baldr's List 3</option>
@@ -106,35 +106,35 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col"
-                                                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 sm:pl-6">
                                                     Player
                                                 </th>
                                                 <th scope="col"
-                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
                                                     Level
                                                 </th>
                                                 <th scope="col"
-                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
                                                     Total
                                                 </th>
                                                 <th scope="col"
-                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
                                                     Strength
                                                 </th>
                                                 <th scope="col"
-                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
                                                     Defense
                                                 </th>
                                                 <th scope="col"
-                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
                                                     Speed
                                                 </th>
                                                 <th scope="col"
-                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
                                                     Dexterity
                                                 </th>
                                                 <th scope="col"
-                                                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">
                                                     Status
                                                 </th>
                                                 <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
