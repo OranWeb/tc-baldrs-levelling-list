@@ -19,6 +19,7 @@ async function fetchData() {
   const dataUrl = dataSelect.options[dataSelect.selectedIndex].value;
 
   showLoadingIndicator();
+  hideDataTable();
 
   try {
     const response = await fetch(dataUrl);
@@ -164,6 +165,11 @@ function showLoadingIndicator() {
 function hideLoadingIndicator() {
   const loadingIndicator = document.getElementById("loading-indicator");
   loadingIndicator.classList.add("hidden");
+}
+
+function hideDataTable() {
+  const dataTable = document.getElementById("data-table");
+  dataTable.classList.add("hidden");
 }
 
 function createAttackLink(id, status) {
