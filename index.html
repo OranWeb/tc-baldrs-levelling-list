@@ -10,6 +10,22 @@
     <title>The Baldr's Levelling List</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+
+    <style>
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js"></script>
     <script src="script.js?v=1.35"></script>
 </head>
@@ -76,7 +92,7 @@
                                     <span class="h-4 w-px flex-none bg-gray-200" aria-hidden="true"></span>
                                     <label for="data-select" class="sr-only">Data select</label>
                                     <select id="data-select" name="data-select"
-                                        class="rounded-md border-0 bg-transparent py-1.5 pl-4 pr-7 text-gray-900 dark:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+                                        class="rounded-md border-0 bg-transparent dark:bg-gray-900 py-1.5 pl-4 mr-1 pr-7 text-gray-900 dark:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
                                         <option value="data.json">Baldr's List</option>
                                         <option value="data3.json">Baldr's List 2</option>
                                         <option value="data4.json">Baldr's List 3</option>
@@ -97,6 +113,13 @@
                         </form>
                     </div>
                     <div class="flex flex-col items-center space-y-4 dark:text-gray-400">
+                        <p id="api-message" class="text-xs font-medium tracking-wider max-w-2xl mx-auto">
+                            API key missing? Don't worry, click <a href="https://www.torn.com/preferences.php#tab=api?&step=addNewKey&title=baldrlist&type=1" target="_blank"
+                            class="font-extrabold text-blue-400 hover:text-blue-300 underline">here</a> and we'll hook you up with one – easy peasy lemon squeezy!
+                        </p>
+                        <div id="loading-indicator" class="fixed inset-0 flex items-center justify-center hidden">
+                            <div class="w-16 h-16 border-t-4 border-blue-600 border-solid rounded-full spin"></div>
+                        </div>
                         <div id="data-table" class="py-4 px-4 sm:px-6 lg:px-8 text-left hidden">
                             <div class="-mx-4 mt-10 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
                                 <div class="table-container overflow-x-auto w-full">
@@ -177,10 +200,3 @@
 </body>
 
 </html>
-
-<!-- TODO: Add generate api key link under input or as secondary button -->
-<!-- TODO: Feature add sqliteDB -->
-<!-- TODO: Error handling: Implement better error handling by displaying user-friendly error messages in the UI, rather than just logging errors to the console. -->
-<!-- TODO: Cache API calls: Cache the results of API calls to prevent redundant requests, which will improve performance and reduce load on the API server. -->
-<!-- TODO: Debounce input: Debounce the input event that triggers the fetchData function. This will prevent multiple API calls when the user is typing or selecting options, improving performance and reducing the number of requests. -->
-<!-- TODO: User experience: Improve the user experience by adding loading indicators to give feedback to users while waiting for API calls to complete. -->

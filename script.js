@@ -18,12 +18,15 @@ async function fetchData() {
   const dataSelect = document.getElementById("data-select");
   const dataUrl = dataSelect.options[dataSelect.selectedIndex].value;
 
+  showLoadingIndicator();
+
   try {
     const response = await fetch(dataUrl);
     const data = await response.json();
     tableData = data;
     if (tableData.length === 0) {
       displayNoDataMessage();
+      hideLoadingIndicator();
       return;
     }
 
@@ -53,7 +56,7 @@ async function fetchData() {
     });
 
     sortedUsers.forEach((user, index) => {
-      const attackLink = createAttackLink(user.id);
+      const attackLink = createAttackLink(user.id, user.status);
       const newRow = createTableRow(user, user.status, attackLink, index);
       tableBody.innerHTML += newRow;
     });
@@ -64,8 +67,11 @@ async function fetchData() {
     setInterval(() => {
       updateStatus();
     }, 1000);
+
+    hideLoadingIndicator();
   } catch (error) {
     console.error("Error fetching data:", error);
+    hideLoadingIndicator();
   }
 }
 
@@ -96,8 +102,12 @@ function parseHospitalTime(status) {
 function displayNoDataMessage() {
   const noDataMessage = document.getElementById("no-data-message");
   noDataMessage.classList.remove("hidden");
+
   const dataTable = document.getElementById("data-table");
   dataTable.classList.add("hidden");
+
+  const apiMessage = document.getElementById("api-message");
+  apiMessage.classList.remove("hidden");
 }
 
 function hideNoDataMessage() {
@@ -108,6 +118,9 @@ function hideNoDataMessage() {
 function displayDataTable() {
   const dataTable = document.getElementById("data-table");
   dataTable.classList.remove("hidden");
+
+  const apiMessage = document.getElementById("api-message");
+  apiMessage.classList.add("hidden");
 }
 
 function formatStatus(status) {
@@ -132,6 +145,9 @@ function updateStatus() {
     const updatedRemaining = remaining - 1;
     if (updatedRemaining <= 0) {
       statusCell.textContent = "Okay";
+      const userId = row.querySelector("a[href*='XID']").textContent.match(/\[(\d+)\]/)[1];
+      const attackLinkCell = row.querySelector("td:nth-child(9)");
+      attackLinkCell.innerHTML = createAttackLink(userId, "Okay");
     } else {
       const updatedMinutes = Math.floor(updatedRemaining / 60);
       const updatedSeconds = updatedRemaining % 60;
@@ -140,8 +156,22 @@ function updateStatus() {
   });
 }
 
-function createAttackLink(id) {
-  return `<a target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID=${id}" class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white">Attack</a>`;
+function showLoadingIndicator() {
+  const loadingIndicator = document.getElementById("loading-indicator");
+  loadingIndicator.classList.remove("hidden");
+}
+
+function hideLoadingIndicator() {
+  const loadingIndicator = document.getElementById("loading-indicator");
+  loadingIndicator.classList.add("hidden");
+}
+
+function createAttackLink(id, status) {
+  const isDisabled = status !== "Okay";
+  const disabledClass = isDisabled ? "cursor-not-allowed opacity-30 hover:bg-white" : "hover:bg-gray-50";
+  const onClick = isDisabled ? "event.preventDefault();" : "";
+
+  return `<a target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID=${id}" class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ${disabledClass}" onclick="${onClick}">Attack</a>`;
 }
 
 function createTableRow(row, status, attackLink, index) {
