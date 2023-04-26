@@ -1,126 +1,202 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Baldr's Levelling List</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@tailwindcss/typography@0.4.1/dist/typography.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@tailwindcss/forms@0.3.3/dist/forms.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"
-    />
+<html lang="en" x-data="{ darkMode: localStorage.getItem('dark') === 'true' }"
+    x-init="$watch('darkMode', val => localStorage.setItem('dark', val)); darkMode = darkMode"
+    x-bind:class="{'dark': darkMode}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Baldr's Levelling List</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+
     <style>
-      html,
-      body {
-        background-color: #1f2937;
-        color: #f9fafb;
-        font-family: "Inter", sans-serif;
-      }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
-  </head>
-  <body class="flex justify-center items-center min-h-screen">
-    <div class="max-w-screen-lg w-full px-4">
-      <h1 class="text-3xl font-bold mt-6 mb-4 text-center">
-        Baldr's Levelling List
-      </h1>
-      <div class="bg-gray-800 rounded-lg p-8">
-        <form class="max-w-md mx-auto">
-          <div class="mb-4">
-            <label for="api-key" class="block text-gray-400 font-medium mb-2"
-              >API Key: Generate a Public API Key using the button below</label
-            >
-            <input
-              type="text"
-              id="api-key"
-              name="api-key"
-              class="border rounded py-2 px-3 w-full bg-gray-700 text-white"
-            />
-          </div>
-          <div class="mb-4">
-            <select
-              id="data-select"
-              name="data-select"
-              class="border rounded py-2 px-3 w-full bg-gray-700 text-white"
-            >
-              <option value="data.json">Baldr's List</option>
-              <option value="data3.json">Baldr's List 2</option>
-              <option value="data4.json">Baldr's List 3</option>
-              <option value="data2.json">Baldr's DOMINO List</option>
-              <option value="datae.json">Baldr's Extra List</option>
-              <option value="datae2.json">Baldr's Extra List 2</option>
-              <option value="datae3.json">Baldr's Extra List 3</option>
-            </select>
-          </div>
-          <button
-            type="submit"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded w-full"
-            onclick="fetchData(); return false;"
-          >
-            Fetch Data
-          </button>
-          <a
-            href="https://www.torn.com/preferences.php#tab=api?&step=addNewKey&title=baldrlist&type=1"
-            ><button
-              type="button"
-              class="mt-1 bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded w-full"
-            >
-              Generate API Key
-            </button></a
-          >
-        </form>
-        <h1 class="text-sm mt-2 text-center">
-          Avoid clicking on fetch button more than twice per minute (API limit)
-        </h1>
-        <h1 class="text-sm text-center">
-          Your API key is not sent or stored anywhere.
-        </h1>
-        <div class="flex justify-center">
-          <a
-            href="https://github.com/oranweb/tc-baldrs-levelling-list"
-            class="text-sm mr-4 text-blue-300"
-            >View Source on Github</a
-          >
-          <a
-            href="https://www.torn.com/forums.php#/p=threads&f=67&t=16328038"
-            class="text-sm text-blue-300"
-            >Leave Feedback</a
-          >
-        </div>
-      </div>
-      <div class="overflow-x-auto mt-8">
-        <table
-          class="w-full table-auto border divide-y divide-gray-700 hidden"
-          id="data-table"
-        >
-          <thead>
-            <tr class="bg-gray-700">
-              <th class="p-2">Name</th>
-              <th class="p-2">User ID</th>
-              <th class="p-2">Level</th>
-              <th class="p-2">Total</th>
-              <th class="p-2">Strength</th>
-              <th class="p-2">Defense</th>
-              <th class="p-2">Speed</th>
-              <th class="p-2">Dexterity</th>
-              <th class="p-2">Status</th>
-              <th class="p-2">Attack</th>
-            </tr>
-          </thead>
-          <tbody id="table-body"></tbody>
-        </table>
-        <p class="text-center text-gray-400 mt-8 hidden" id="no-data-message">
-          No data available.
-        </p>
-      </div>
-    </div>
-    <!--- reminder to cache bust script --->
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js"></script>
     <script src="script.js?v=1.35"></script>
-  </body>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 font-sans leading-normal text-gray-800 dark:text-gray-200 overflow-x-hidden">
+    <div class="hidden sm:block sm:absolute sm:inset-y-0 sm:h-full sm:w-full">
+        <div class="relative h-full max-w-7xl w-full mx-auto">
+            <svg class="absolute right-full transform translate-y-1/8 translate-x-1/8 lg:translate-x-1/4" width="404"
+                height="784" fill="none" viewBox="0 0 404 784">
+                <defs>
+                    <pattern id="left-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <rect x="0" y="0" width="4" height="4" class="text-gray-200 dark:text-gray-800"
+                            fill="currentColor">
+                        </rect>
+                    </pattern>
+                </defs>
+                <rect width="404" height="784" fill="url(#left-pattern)"></rect>
+            </svg>
+            <svg class="absolute left-full transform -translate-y-1/2 -translate-x-1/8 md:-translate-y-1/2 lg:-translate-x-1/4"
+                width="404" height="784" fill="none" viewBox="0 0 404 784">
+                <defs>
+                    <pattern id="right-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <rect x="0" y="0" width="4" height="4" class="text-gray-200 dark:text-gray-800"
+                            fill="currentColor">
+                        </rect>
+                    </pattern>
+                </defs>
+                <rect width="404" height="784" fill="url(#right-pattern)"></rect>
+            </svg>
+        </div>
+    </div>
+    <div class="relative flex flex-col min-h-screen py-12 px-2 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-center">
+            <div class="flex flex-col justify-around">
+                <div class="space-y-6 text-center text-gray-600 dark:text-gray-300">
+                    <h1 class="sm:pt-16 text-4xl font-extrabold tracking-wider text-gray-700 dark:text-gray-200">
+                        The <a href="https://www.torn.com/profiles.php?XID=1847600" target="_blank"><span
+                                class="text-blue-600 underline">Baldr's</span></a> Levelling List
+                    </h1>
+                    <h3 class="text-base font-medium tracking-wider">
+                        <div class="max-w-2xl mx-auto">
+                            <p>
+                                This list features inactive, low-stat players, ideal for leveling up. Focus on <span
+                                    class="font-extrabold text-blue-600">beating</span>
+                                and
+                                <span class="font-extrabold text-blue-600">leaving</span> them in the street
+                                for maximum
+                                experience gains. Experience is based on the
+                                target's
+                                level, not their stats.
+                            </p>
+                        </div>
+                    </h3>
+                    <div class="py-4 mx-auto max-w-4xl flex justify-center items-center flex-wrap">
+                        <form class="mt-6 sm:flex sm:items-center">
+                            <label for="api-key" class="sr-only">API key</label>
+                            <div class="grid grid-cols-1 sm:flex-auto px-2">
+                                <input type="text" name="api-key" id="api-key"
+                                    class="peer relative col-start-1 row-start-1 border-0 bg-transparent text-gray-900 dark:text-gray-300 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 w-72 h-10 px-4 py-2"
+                                    placeholder="API key" autocomplete="off">
+                                <div class="col-start-1 col-end-3 row-start-1 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 peer-focus:ring-2 peer-focus:ring-blue-600"
+                                    aria-hidden="true"></div>
+                                <div class="col-start-2 row-start-1 flex items-center">
+                                    <span class="h-4 w-px flex-none bg-gray-200" aria-hidden="true"></span>
+                                    <label for="data-select" class="sr-only">Data select</label>
+                                    <select id="data-select" name="data-select"
+                                        class="rounded-md border-0 bg-transparent dark:bg-gray-900 py-1.5 pl-4 mr-1 pr-7 text-gray-900 dark:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+                                        <option value="data.json">Baldr's List</option>
+                                        <option value="data3.json">Baldr's List 2</option>
+                                        <option value="data4.json">Baldr's List 3</option>
+                                        <option value="data2.json">Baldr's DOMINO List</option>
+                                        <option value="datae.json">Baldr's Extra List</option>
+                                        <option value="datae2.json">Baldr's Extra List 2</option>
+                                        <option value="datae3.json">Baldr's Extra List 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-3 sm:ml-4 sm:mt-0 sm:flex-shrink-0">
+                                <button type="submit" id="fetch-button"
+                                    class="block w-full rounded-md bg-blue-600 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 h-10 px-4 py-2"
+                                    onclick="fetchData(); return false;">
+                                    Fetch
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="flex flex-col items-center space-y-4 dark:text-gray-400">
+                        <p id="api-message" class="text-xs font-medium tracking-wider max-w-2xl mx-auto">
+                            API key missing? Don't worry, click <a href="https://www.torn.com/preferences.php#tab=api?&step=addNewKey&title=baldrlist&type=1" target="_blank"
+                            class="font-extrabold text-blue-400 hover:text-blue-300 underline">here</a> and we'll hook you up with one – easy peasy lemon squeezy!
+                        </p>
+                        <div id="loading-indicator" class="fixed inset-0 flex items-center justify-center hidden">
+                            <div class="w-16 h-16 border-t-4 border-blue-600 border-solid rounded-full spin"></div>
+                        </div>
+                        <div id="data-table" class="py-4 px-4 sm:px-6 lg:px-8 text-left hidden">
+                            <div class="-mx-4 mt-10 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
+                                <div class="table-container overflow-x-auto w-full">
+                                    <table class="table-fixed max-w-full min-w-full divide-y divide-gray-300">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col"
+                                                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 sm:pl-6">
+                                                    Player
+                                                </th>
+                                                <th scope="col"
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
+                                                    Level
+                                                </th>
+                                                <th scope="col"
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
+                                                    Total
+                                                </th>
+                                                <th scope="col"
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
+                                                    Strength
+                                                </th>
+                                                <th scope="col"
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
+                                                    Defense
+                                                </th>
+                                                <th scope="col"
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
+                                                    Speed
+                                                </th>
+                                                <th scope="col"
+                                                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell">
+                                                    Dexterity
+                                                </th>
+                                                <th scope="col"
+                                                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">
+                                                    Status
+                                                </th>
+                                                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                                                    <span class="sr-only">Attack</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-body"></tbody>
+                                    </table>
+                                    <p id="no-data-message"
+                                        class="hidden px-3 py-3.5 text-sm text-gray-400 border-t border-gray-200">
+                                        No data available.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer mt-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm font-medium tracking-wider max-w-2xl mx-auto">
+                This code was crafted with love and fueled by countless cups of coffee, courtesy of
+                <a href="https://www.torn.com/profiles.php?XID=1778676"
+                    class="font-extrabold text-blue-400 hover:text-blue-300">oraN [1778676]</a> and <a
+                    href="https://www.torn.com/profiles.php?XID=2914212"
+                    class="font-extrabold text-blue-400 hover:text-blue-300">Lefu [2914212]</a>. Your
+                support
+                means the world
+                to us!
+            </p>
+            <p class="py-8 text-sm font-medium tracking-wider max-w-2xl mx-auto">
+                You can find this project's source code on <a href="https://github.com/oranweb/tc-baldrs-levelling-list"
+                    target="_blank" class="text-blue-400 hover:text-blue-300">GitHub</a>. Your feedback is appreciated -
+                <a href="https://www.torn.com/forums.php#/p=threads&f=67&t=16328038" target="_blank"
+                    class="text-blue-400 hover:text-blue-300">please feel free to
+                    leave your comments</a>.
+            </p>
+        </div>
+    </div>
+</body>
+
 </html>
