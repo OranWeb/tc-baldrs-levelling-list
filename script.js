@@ -1,10 +1,33 @@
 let tableData = [];
 let timer;
 
+async function loadListNames() {
+  try {
+    const response = await fetch("data.json");
+    const data = await response.json();
+    const listSelect = document.getElementById("list-select");
+    for (const listName in data) {
+      const option = document.createElement("option");
+      option.value = listName;
+      option.textContent = listName;
+      listSelect.appendChild(option);
+    }
+  } catch (error) {
+    console.error("Error loading list names:", error);
+  }
+}
+
 async function fetchData() {
   const apiKey = document.getElementById("api-key").value;
   if (apiKey === "") {
     alert("Please enter an API key");
+    return;
+  }
+
+  const listSelect = document.getElementById("list-select");
+  const selectedList = listSelect.value;
+
+  if (!selectedList) {
     return;
   }
 
@@ -15,16 +38,13 @@ async function fetchData() {
   const tableBody = document.getElementById("table-body");
   tableBody.innerHTML = "";
 
-  const dataSelect = document.getElementById("data-select");
-  const dataUrl = dataSelect.options[dataSelect.selectedIndex].value;
-
   showLoadingIndicator();
   hideDataTable();
 
   try {
-    const response = await fetch(dataUrl);
+    const response = await fetch("data.json");
     const data = await response.json();
-    tableData = data;
+    tableData = data[selectedList];
     if (tableData.length === 0) {
       displayNoDataMessage();
       hideLoadingIndicator();
@@ -214,3 +234,5 @@ function createTableRow(row, status, attackLink, index) {
     </tr>
   `;
 }
+
+document.addEventListener("DOMContentLoaded", loadListNames);

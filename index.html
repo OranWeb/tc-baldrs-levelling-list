@@ -16,6 +16,7 @@
             from {
                 transform: rotate(0deg);
             }
+
             to {
                 transform: rotate(360deg);
             }
@@ -90,16 +91,9 @@
                                     aria-hidden="true"></div>
                                 <div class="col-start-2 row-start-1 flex items-center">
                                     <span class="h-4 w-px flex-none bg-gray-200" aria-hidden="true"></span>
-                                    <label for="data-select" class="sr-only">Data select</label>
-                                    <select id="data-select" name="data-select"
+                                    <label for="list-select" class="sr-only">List select</label>
+                                    <select id="list-select" name="list-select"
                                         class="rounded-md border-0 bg-transparent dark:bg-gray-900 py-1.5 pl-4 mr-1 pr-7 text-gray-900 dark:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
-                                        <option value="data.json">Baldr's List</option>
-                                        <option value="data3.json">Baldr's List 2</option>
-                                        <option value="data4.json">Baldr's List 3</option>
-                                        <option value="data2.json">Baldr's DOMINO List</option>
-                                        <option value="datae.json">Baldr's Extra List</option>
-                                        <option value="datae2.json">Baldr's Extra List 2</option>
-                                        <option value="datae3.json">Baldr's Extra List 3</option>
                                     </select>
                                 </div>
                             </div>
@@ -114,8 +108,11 @@
                     </div>
                     <div class="flex flex-col items-center space-y-4 dark:text-gray-400">
                         <p id="api-message" class="text-xs font-medium tracking-wider max-w-2xl mx-auto">
-                            API key missing? Don't worry, click <a href="https://www.torn.com/preferences.php#tab=api?&step=addNewKey&title=baldrlist&type=1" target="_blank"
-                            class="font-extrabold text-blue-400 hover:text-blue-300 underline">here</a> and we'll hook you up with one – easy peasy lemon squeezy!
+                            API key missing? Don't worry, click <a
+                                href="https://www.torn.com/preferences.php#tab=api?&step=addNewKey&title=baldrlist&type=1"
+                                target="_blank"
+                                class="font-extrabold text-blue-400 hover:text-blue-300 underline">here</a> and we'll
+                            hook you up with one – easy peasy lemon squeezy!
                         </p>
                         <div id="loading-indicator" class="fixed inset-0 flex items-center justify-center hidden">
                             <div class="w-16 h-16 border-t-4 border-blue-600 border-solid rounded-full spin"></div>
