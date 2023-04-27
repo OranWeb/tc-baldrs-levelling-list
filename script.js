@@ -1,5 +1,6 @@
 let tableData = [];
 let timer;
+let statusUpdateInterval;
 
 async function loadListNames() {
   try {
@@ -85,7 +86,8 @@ async function fetchData() {
     hideNoDataMessage();
     displayDataTable();
 
-    setInterval(() => {
+    clearInterval(statusUpdateInterval);
+    statusUpdateInterval = setInterval(() => {
       updateStatus();
     }, 1000);
 
