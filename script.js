@@ -106,13 +106,14 @@ function startCountdown() {
   clearInterval(timer);
   timer = setInterval(() => {
     const secondsSinceStart = Math.floor((Date.now() - startTime) / 1000);
-    const remainingTime = Math.max(0, countdownSeconds - secondsSinceStart);
-    fetchButton.textContent = `Fetch (${remainingTime}s)`;
+    const remainingTime = countdownSeconds - secondsSinceStart;
 
     if (remainingTime <= 0) {
       clearInterval(timer);
       fetchButton.textContent = "Fetch";
       fetchButton.disabled = false;
+    } else {
+      fetchButton.textContent = `Fetch (${remainingTime}s)`;
     }
   }, 1000);
 }
