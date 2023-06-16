@@ -1,10 +1,34 @@
 let tableData = [];
 let timer;
+let statusUpdateInterval;
+
+async function loadListNames() {
+  try {
+    const response = await fetch("data.json");
+    const data = await response.json();
+    const listSelect = document.getElementById("list-select");
+    for (const listName in data) {
+      const option = document.createElement("option");
+      option.value = listName;
+      option.textContent = listName;
+      listSelect.appendChild(option);
+    }
+  } catch (error) {
+    console.error("Error loading list names:", error);
+  }
+}
 
 async function fetchData() {
   const apiKey = document.getElementById("api-key").value;
   if (apiKey === "") {
     alert("Please enter an API key");
+    return;
+  }
+
+  const listSelect = document.getElementById("list-select");
+  const selectedList = listSelect.value;
+
+  if (!selectedList) {
     return;
   }
 
@@ -15,16 +39,13 @@ async function fetchData() {
   const tableBody = document.getElementById("table-body");
   tableBody.innerHTML = "";
 
-  const dataSelect = document.getElementById("data-select");
-  const dataUrl = dataSelect.options[dataSelect.selectedIndex].value;
-
   showLoadingIndicator();
   hideDataTable();
 
   try {
-    const response = await fetch(dataUrl);
+    const response = await fetch("data.json");
     const data = await response.json();
-    tableData = data;
+    tableData = data[selectedList];
     if (tableData.length === 0) {
       displayNoDataMessage();
       hideLoadingIndicator();
@@ -65,7 +86,8 @@ async function fetchData() {
     hideNoDataMessage();
     displayDataTable();
 
-    setInterval(() => {
+    clearInterval(statusUpdateInterval);
+    statusUpdateInterval = setInterval(() => {
       updateStatus();
     }, 1000);
 
@@ -78,17 +100,20 @@ async function fetchData() {
 
 function startCountdown() {
   const fetchButton = document.getElementById("fetch-button");
-  let remainingTime = 30;
+  const startTime = Date.now();
+  const countdownSeconds = 30;
 
   clearInterval(timer);
   timer = setInterval(() => {
-    remainingTime--;
-    fetchButton.textContent = `Fetch (${remainingTime}s)`;
+    const secondsSinceStart = Math.floor((Date.now() - startTime) / 1000);
+    const remainingTime = countdownSeconds - secondsSinceStart;
 
     if (remainingTime <= 0) {
       clearInterval(timer);
       fetchButton.textContent = "Fetch";
       fetchButton.disabled = false;
+    } else {
+      fetchButton.textContent = `Fetch (${remainingTime}s)`;
     }
   }, 1000);
 }
@@ -214,3 +239,5 @@ function createTableRow(row, status, attackLink, index) {
     </tr>
   `;
 }
+
+document.addEventListener("DOMContentLoaded", loadListNames);
