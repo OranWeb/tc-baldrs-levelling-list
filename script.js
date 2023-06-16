@@ -100,17 +100,20 @@ async function fetchData() {
 
 function startCountdown() {
   const fetchButton = document.getElementById("fetch-button");
-  let remainingTime = 30;
+  const startTime = Date.now();
+  const countdownSeconds = 30;
 
   clearInterval(timer);
   timer = setInterval(() => {
-    remainingTime--;
-    fetchButton.textContent = `Fetch (${remainingTime}s)`;
+    const secondsSinceStart = Math.floor((Date.now() - startTime) / 1000);
+    const remainingTime = countdownSeconds - secondsSinceStart;
 
     if (remainingTime <= 0) {
       clearInterval(timer);
       fetchButton.textContent = "Fetch";
       fetchButton.disabled = false;
+    } else {
+      fetchButton.textContent = `Fetch (${remainingTime}s)`;
     }
   }, 1000);
 }
