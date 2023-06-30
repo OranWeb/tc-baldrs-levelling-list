@@ -205,6 +205,14 @@ function createAttackLink(id, status) {
   return `<a target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID=${id}" class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ${disabledClass}" onclick="${onClick}">Attack</a>`;
 }
 
+function populateAPIKey() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const apiKey = urlParams.get('apiKey');
+  if (apiKey) {
+    document.getElementById("api-key").value = apiKey;
+  }
+}
+
 function createTableRow(row, status, attackLink, index) {
   const isNotFirst = index > 0;
   const borderClass = isNotFirst ? 'border-t border-gray-200' : '';
@@ -240,4 +248,7 @@ function createTableRow(row, status, attackLink, index) {
   `;
 }
 
-document.addEventListener("DOMContentLoaded", loadListNames);
+document.addEventListener("DOMContentLoaded", () => {
+  populateAPIKey();
+  loadListNames();
+});
