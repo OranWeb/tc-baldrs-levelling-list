@@ -20,10 +20,19 @@ async function loadListNames() {
 
 async function fetchData() {
   const apiKey = document.getElementById("api-key").value;
+
   if (apiKey === "") {
     alert("Please enter an API key");
     return;
+  } else if (apiKey.length !== 16) {
+    alert("Invalid API key length");
+    return;
+  } else if (!apiKey.match(/^[a-zA-Z0-9]+$/)) {
+    alert("Invalid API key format");
+    return;
   }
+
+  localStorage.setItem("apiKey", apiKey);
 
   const listSelect = document.getElementById("list-select");
   const selectedList = listSelect.value;
@@ -171,7 +180,9 @@ function updateStatus() {
     const updatedRemaining = remaining - 1;
     if (updatedRemaining <= 0) {
       statusCell.textContent = "Okay";
-      const userId = row.querySelector("a[href*='XID']").textContent.match(/\[(\d+)\]/)[1];
+      const userId = row
+        .querySelector("a[href*='XID']")
+        .textContent.match(/\[(\d+)\]/)[1];
       const attackLinkCell = row.querySelector("td:nth-child(9)");
       attackLinkCell.innerHTML = createAttackLink(userId, "Okay");
     } else {
@@ -199,7 +210,9 @@ function hideDataTable() {
 
 function createAttackLink(id, status) {
   const isDisabled = status !== "Okay";
-  const disabledClass = isDisabled ? "cursor-not-allowed opacity-30 hover:bg-white" : "hover:bg-gray-50";
+  const disabledClass = isDisabled
+    ? "cursor-not-allowed opacity-30 hover:bg-white"
+    : "hover:bg-gray-50";
   const onClick = isDisabled ? "event.preventDefault();" : "";
 
   return `<a target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID=${id}" class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ${disabledClass}" onclick="${onClick}">Attack</a>`;
@@ -207,15 +220,20 @@ function createAttackLink(id, status) {
 
 function populateAPIKey() {
   const urlParams = new URLSearchParams(window.location.search);
-  const apiKey = urlParams.get('apiKey');
+  const apiKey = urlParams.get("apiKey");
   if (apiKey) {
     document.getElementById("api-key").value = apiKey;
+  } else {
+    const storedApiKey = localStorage.getItem("apiKey");
+    if (storedApiKey) {
+      document.getElementById("api-key").value = storedApiKey;
+    }
   }
 }
 
 function createTableRow(row, status, attackLink, index) {
   const isNotFirst = index > 0;
-  const borderClass = isNotFirst ? 'border-t border-gray-200' : '';
+  const borderClass = isNotFirst ? "border-t border-gray-200" : "";
 
   return `
     <tr>
