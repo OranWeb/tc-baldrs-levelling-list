@@ -78,7 +78,10 @@ async function fetchData() {
     const sortedUsers = usersWithStatus.sort((a, b) => {
       if (a.status === "Okay" && b.status !== "Okay") return -1;
       if (a.status !== "Okay" && b.status === "Okay") return 1;
-      if (a.status === "Okay" && b.status === "Okay") return 0;
+
+      if (a.status === "Okay" && b.status === "Okay") {
+        return b.lvl - a.lvl;
+      }
 
       const aRemaining = parseHospitalTime(a.status);
       const bRemaining = parseHospitalTime(b.status);
