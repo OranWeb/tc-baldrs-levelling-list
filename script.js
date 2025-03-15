@@ -25,6 +25,8 @@ async function fetchData() {
     return;
   }
 
+  localStorage.setItem("apiKey", apiKey);
+
   const listSelect = document.getElementById("list-select");
   const selectedList = listSelect.value;
 
@@ -210,6 +212,11 @@ function populateAPIKey() {
   const apiKey = urlParams.get('apiKey');
   if (apiKey) {
     document.getElementById("api-key").value = apiKey;
+    localStorage.setItem("apiKey", apiKey);
+  } else {
+    const storedApiKey = localStorage.getItem("apiKey");
+    if (storedApiKey)
+      document.getElementById("api-key").value = storedApiKey;
   }
 }
 
