@@ -343,7 +343,7 @@ function createAttackLink(id, status) {
   const disabledClass = isDisabled ? "cursor-not-allowed opacity-30 hover:bg-white dark:hover:bg-gray-800" : "hover:bg-gray-50 dark:hover:bg-gray-700";
   const onClick = isDisabled ? "event.preventDefault();" : "highlightRow(this)";
 
-  return `<a target="_blank" href="https://www.torn.com/loader2.php?sid=getInAttack&user2ID=${id}" class="inline-flex items-center rounded-md bg-white dark:bg-gray-800 px-2.5 py-1.5 text-sm font-semibold text-gray-900 dark:text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 ${disabledClass}" onclick="${onClick}">Attack</a>`;
+  return `<a target="_blank" href="https://www.torn.com/page.php?sid=attack&user2ID=${id}" class="inline-flex items-center rounded-md bg-white dark:bg-gray-800 px-2.5 py-1.5 text-sm font-semibold text-gray-900 dark:text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 ${disabledClass}" onclick="${onClick}">Attack</a>`;
 }
 
 function populateAPIKey() {
