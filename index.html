@@ -209,51 +209,67 @@
                         <tr>
                           <th
                             scope="col"
-                            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 sm:pl-6"
+                            data-col="name"
+                            onclick="sortTable('name')"
+                            class="cursor-pointer select-none py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 sm:pl-6"
                           >
-                            Player
+                            Player<span class="sort-icon text-gray-400"> ↕</span>
                           </th>
                           <th
                             scope="col"
-                            class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
+                            data-col="lvl"
+                            onclick="sortTable('lvl')"
+                            class="cursor-pointer select-none hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
                           >
-                            Level
+                            Level<span class="sort-icon text-gray-400"> ↕</span>
                           </th>
                           <th
                             scope="col"
-                            class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
+                            data-col="total"
+                            onclick="sortTable('total')"
+                            class="cursor-pointer select-none hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
                           >
-                            Total
+                            Total<span class="sort-icon text-gray-400"> ↕</span>
                           </th>
                           <th
                             scope="col"
-                            class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
+                            data-col="str"
+                            onclick="sortTable('str')"
+                            class="cursor-pointer select-none hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
                           >
-                            Strength
+                            Strength<span class="sort-icon text-gray-400"> ↕</span>
                           </th>
                           <th
                             scope="col"
-                            class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
+                            data-col="def"
+                            onclick="sortTable('def')"
+                            class="cursor-pointer select-none hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
                           >
-                            Defense
+                            Defense<span class="sort-icon text-gray-400"> ↕</span>
                           </th>
                           <th
                             scope="col"
-                            class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
+                            data-col="spd"
+                            onclick="sortTable('spd')"
+                            class="cursor-pointer select-none hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
                           >
-                            Speed
+                            Speed<span class="sort-icon text-gray-400"> ↕</span>
                           </th>
                           <th
                             scope="col"
-                            class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
+                            data-col="dex"
+                            onclick="sortTable('dex')"
+                            class="cursor-pointer select-none hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300 lg:table-cell"
                           >
-                            Dexterity
+                            Dexterity<span class="sort-icon text-gray-400"> ↕</span>
                           </th>
                           <th
                             scope="col"
-                            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300"
+                            data-col="status"
+                            onclick="sortTable('status')"
+                            class="cursor-pointer select-none px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300"
                           >
-                            Status
+                            Status<span class="sort-icon text-gray-400"> ↕</span>
                           </th>
                           <th
                             scope="col"
