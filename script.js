@@ -1,4 +1,6 @@
 let tableData = [];
+let renderedUsers = [];
+let currentSort = { col: null, dir: 'asc' };
 let timer;
 let statusUpdateInterval;
 
@@ -181,11 +183,10 @@ async function fetchData() {
             return aRemaining - bRemaining;
         });
 
-        sortedUsers.forEach((user, index) => {
-            const attackLink = createAttackLink(user.id, user.status);
-            const newRow = createTableRow(user, user.status, attackLink, index);
-            tableBody.innerHTML += newRow;
-        });
+        renderedUsers = sortedUsers;
+        currentSort = { col: null, dir: 'asc' };
+        renderTable(renderedUsers);
+        updateSortIndicators();
 
         hideNoDataMessage();
         displayDataTable();
@@ -392,6 +393,58 @@ function createTableRow(row, status, attackLink, index) {
       </td>
     </tr>
   `;
+}
+
+
+function renderTable(users) {
+  const tableBody = document.getElementById("table-body");
+  tableBody.innerHTML = "";
+  users.forEach((user, index) => {
+    const attackLink = createAttackLink(user.id, user.status);
+    tableBody.innerHTML += createTableRow(user, user.status, attackLink, index);
+  });
+}
+
+function statusSortValue(status) {
+  if (status === 'Okay') return -1;
+  const remaining = parseHospitalTime(status);
+  return remaining === Infinity ? Number.MAX_SAFE_INTEGER : remaining;
+}
+
+function sortTable(col) {
+  if (currentSort.col === col) {
+    currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort.col = col;
+    currentSort.dir = 'asc';
+  }
+
+  const sorted = [...renderedUsers].sort((a, b) => {
+    const dir = currentSort.dir === 'asc' ? 1 : -1;
+    if (col === 'status') {
+      return dir * (statusSortValue(a.status) - statusSortValue(b.status));
+    }
+    if (col === 'name') {
+      return dir * a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    }
+    return dir * (a[col] - b[col]);
+  });
+
+  renderTable(sorted);
+  updateSortIndicators();
+}
+
+function updateSortIndicators() {
+  document.querySelectorAll('th[data-col]').forEach(th => {
+    const span = th.querySelector('.sort-icon');
+    if (!span) return;
+    const col = th.dataset.col;
+    if (col === currentSort.col) {
+      span.textContent = currentSort.dir === 'asc' ? ' ↑' : ' ↓';
+    } else {
+      span.textContent = ' ↕';
+    }
+  });
 }
 
 function showCustomPopup(message) {
