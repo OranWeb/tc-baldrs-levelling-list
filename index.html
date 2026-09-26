@@ -36,12 +36,12 @@
   <body
     class="bg-gray-50 dark:bg-gray-900 font-sans leading-normal text-gray-800 dark:text-gray-200 overflow-x-hidden"
   >
-    <div class="hidden sm:block sm:absolute sm:inset-y-0 sm:h-full sm:w-full">
+    <div class="hidden sm:block fixed inset-0 w-full pointer-events-none overflow-hidden z-0">
       <div class="relative h-full max-w-7xl w-full mx-auto">
         <svg
           class="absolute right-full transform translate-y-1/8 translate-x-1/8 lg:translate-x-1/4"
           width="404"
-          height="784"
+          height="100%"
           fill="none"
           viewBox="0 0 404 784"
         >
@@ -64,12 +64,12 @@
               ></rect>
             </pattern>
           </defs>
-          <rect width="404" height="784" fill="url(#left-pattern)"></rect>
+          <rect width="404" height="100%" fill="url(#left-pattern)"></rect>
         </svg>
         <svg
           class="absolute left-full transform -translate-y-1/8 -translate-x-1/8 lg:-translate-x-1/4"
           width="404"
-          height="784"
+          height="100%"
           fill="none"
           viewBox="0 0 404 784"
         >
@@ -92,11 +92,11 @@
               ></rect>
             </pattern>
           </defs>
-          <rect width="404" height="784" fill="url(#right-pattern)"></rect>
+          <rect width="404" height="100%" fill="url(#right-pattern)"></rect>
         </svg>
       </div>
     </div>
-    <div class="relative flex flex-col min-h-screen py-12 px-2 sm:px-6 lg:px-8">
+    <div class="relative z-10 flex flex-col min-h-screen py-12 px-2 sm:px-6 lg:px-8">
       <div class="flex items-center justify-center">
         <div class="flex flex-col justify-around">
           <div class="space-y-6 text-center text-gray-600 dark:text-gray-300">
