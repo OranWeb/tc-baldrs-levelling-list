@@ -59,7 +59,9 @@ async function fetchData() {
         return;
     }
 
-    localStorage.setItem("apiKey", apiKey);
+    // Use sessionStorage (not localStorage) so the API key is cleared when the
+    // browser/tab is closed instead of persisting indefinitely in plaintext.
+    sessionStorage.setItem("apiKey", apiKey);
 
     const listSelect = document.getElementById("list-select");
     const selectedList = listSelect.value;
@@ -351,9 +353,9 @@ function populateAPIKey() {
   const apiKey = urlParams.get('apiKey');
   if (apiKey) {
     document.getElementById("api-key").value = apiKey;
-    localStorage.setItem("apiKey", apiKey);
+    sessionStorage.setItem("apiKey", apiKey);
   } else {
-    const storedApiKey = localStorage.getItem("apiKey");
+    const storedApiKey = sessionStorage.getItem("apiKey");
     if (storedApiKey)
       document.getElementById("api-key").value = storedApiKey;
   }
