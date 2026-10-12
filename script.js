@@ -1,6 +1,7 @@
 let tableData = [];
 let timer;
 let statusUpdateInterval;
+const DATA_URL = "https://raw.githubusercontent.com/Baldr-Geek/Baldrs-List/refs/heads/main/data.json";
 
 function getValidStoredUserInfo() {
     const storedTimestampStr = localStorage.getItem('userInfoTimestamp');
@@ -32,7 +33,7 @@ function getValidStoredUserInfo() {
 
 async function loadListNames() {
   try {
-    const response = await fetch("data.json");
+    const response = await fetch(DATA_URL);
     const data = await response.json();
     const listSelect = document.getElementById("list-select");
     for (const listName in data) {
@@ -127,7 +128,7 @@ async function fetchData() {
         }
 
 
-        const response = await fetch("data.json");
+        const response = await fetch(DATA_URL);
         const data = await response.json();
         tableData = data[selectedList];
 
@@ -338,12 +339,22 @@ function highlightRow(button) {
   }
 }
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
 function createAttackLink(id, status) {
   const isDisabled = status !== "Okay";
   const disabledClass = isDisabled ? "cursor-not-allowed opacity-30 hover:bg-white dark:hover:bg-gray-800" : "hover:bg-gray-50 dark:hover:bg-gray-700";
   const onClick = isDisabled ? "event.preventDefault();" : "highlightRow(this)";
 
-  return `<a target="_blank" href="https://www.torn.com/page.php?sid=attack&user2ID=${id}" class="inline-flex items-center rounded-md bg-white dark:bg-gray-800 px-2.5 py-1.5 text-sm font-semibold text-gray-900 dark:text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 ${disabledClass}" onclick="${onClick}">Attack</a>`;
+  return `<a target="_blank" href="https://www.torn.com/page.php?sid=attack&user2ID=${escapeHtml(id)}" class="inline-flex items-center rounded-md bg-white dark:bg-gray-800 px-2.5 py-1.5 text-sm font-semibold text-gray-900 dark:text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 ${disabledClass}" onclick="${onClick}">Attack</a>`;
 }
 
 function populateAPIKey() {
@@ -367,22 +378,22 @@ function createTableRow(row, status, attackLink, index) {
     <tr>
       <td class="relative py-4 pl-4 pr-3 text-sm sm:pl-6 min-w-0 ${borderClass}">
         <div class="font-medium text-gray-900 dark:text-gray-300">
-            <a href="https://www.torn.com/profiles.php?XID=${row.id}" target="_blank">
-              ${row.name}
-              <span class="ml-1 text-blue-600">[${row.id}]</span>
+            <a href="https://www.torn.com/profiles.php?XID=${escapeHtml(row.id)}" target="_blank">
+              ${escapeHtml(row.name)}
+              <span class="ml-1 text-blue-600">[${escapeHtml(row.id)}]</span>
             </a>
         </div>
         <div class="mt-1 flex flex-col text-gray-500 dark:text-gray-400 sm:block lg:hidden">
-            <span>Level: ${row.lvl}</span>
-            <span>Total: ${row.total}</span>
+            <span>Level: ${escapeHtml(row.lvl)}</span>
+            <span>Total: ${escapeHtml(row.total)}</span>
         </div>
       </td>
-      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${row.lvl}</td>
-      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${row.total}</td>
-      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${row.str}</td>
-      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${row.def}</td>
-      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${row.spd}</td>
-      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${row.dex}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${escapeHtml(row.lvl)}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${escapeHtml(row.total)}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${escapeHtml(row.str)}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${escapeHtml(row.def)}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${escapeHtml(row.spd)}</td>
+      <td class="hidden px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 lg:table-cell min-w-0 ${borderClass}">${escapeHtml(row.dex)}</td>
       <td class="px-3 py-3.5 text-sm text-gray-500 dark:text-gray-400 min-w-0 ${borderClass}">
         <div class="sm:hidden w-40">${status}</div>
         <div class="hidden sm:block w-40">${status}</div>
